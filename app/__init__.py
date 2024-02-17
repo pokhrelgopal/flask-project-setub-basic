@@ -19,7 +19,6 @@ If you need more folder to store media files, you can create more variables like
 
 
 app = Flask(__name__)
-from app import routes
 
 
 # ! Serve media files
@@ -32,13 +31,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.secret_key = os.getenv("SECRET_KEY")
 
 
-with app.app_context():
-    db = SQLAlchemy(app)
-    migrate = Migrate(app, db)
-
-    from app import models
-
-    db.create_all()
-    db.session.commit()
-
+db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+
+from app import routes
+
+
+with app.app_context():
+    db.create_all()
